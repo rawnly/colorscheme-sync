@@ -1,12 +1,75 @@
-import themes from '../theme-config.json'
+#!/usr/bin/env node
+
 import fs from 'node:fs'
 import os from 'node:os'
 import { load } from 'js-yaml'
 import path from 'node:path'
 import yaml from 'yaml'
+import fallbackThemes from '../theme-config.json'
 
-function getThemes(): Theme[] {
-  return themes as any
+interface ResultSuccess<T> { data: T; ok: true }
+interface ResultFailure<E> { error: E, ok: false }
+type Result<T, E> = ResultSuccess<T> | ResultFailure<E>;
+
+async function toResult<T, E>(promise: () => Promise<T>, toError: (error: unknown) => E): Promise<Result<T, E>> {
+  try {
+    const data = await promise()
+
+    return {
+      data,
+      ok: true
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      error: toError(error)
+    }
+  }
+}
+
+async function readFile(p: string) {
+  return fs.promises.readFile(path.join(os.homedir(), p), 'utf-8')
+}
+
+function toError(err: unknown): Error {
+  if (err instanceof Error) return err
+  return new Error(err as any)
+}
+
+function parseJson<T>(data: string): Result<T, Error> {
+  try {
+    const d = JSON.parse(data)
+
+    return {
+      ok: true,
+      data: d
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      error: toError(error)
+    }
+  }
+}
+
+// maybe the worst thing i've ever done :/
+async function getThemes(): Promise<Theme[]> {
+  const c1 = await toResult(() => readFile('.colorschemes.json'), toError)
+  const c2 = await toResult(() => readFile('.config/colorschemes/themes.json'), toError)
+
+  const colorschemes = c1.ok ? c1.data : c2.ok ? c2.data : undefined
+
+  if (!colorschemes) {
+    return fallbackThemes
+  }
+
+  const json = parseJson<Theme[]>(colorschemes)
+
+  if (!json.ok) {
+    return fallbackThemes
+  }
+
+  return json.data
 }
 
 interface Theme {
@@ -21,9 +84,23 @@ interface Theme {
   }
 }
 
-function main() {
+function printHelp() {
+  console.log('Colorscheme')
+  console.log()
+  console.log(`Usage: 
+      $ colorscheme <theme-name>`)
+}
+
+async function main() {
   const [theme_name = 'nightfox'] = process.argv.slice(2);
-  const theme = getThemes().find(t => t.name === theme_name)
+
+  if (['--help', '-h', 'help'].includes(theme_name)) {
+    printHelp()
+    return
+  }
+
+  const themes = await getThemes()
+  const theme = themes.find(t => t.name === theme_name)
 
   if (!theme) {
     console.warn('cannot find theme: ', theme_name);

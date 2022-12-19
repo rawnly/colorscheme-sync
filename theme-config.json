@@ -34,5 +34,16 @@
         "name": "/Users/federicovitale/.tmux/themes/iceberg_minimal.tmux.conf"
       }
     }
+  },
+  {
+    "name": "carbonfox",
+    "items": {
+      "neovim": "carbonfox",
+      "alacritty": "/Users/federicovitale/.config/alacritty/themes/nightfox/carbonfox.yml",
+      "tmux": {
+        "plugin": false,
+        "name": "/Users/federicovitale/.tmux/themes/nightfox/carbonfox.tmux"
+      }
+    }
   }
 ]
