@@ -1,0 +1,29 @@
+{
+  "name": "colorscheme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsup src",
+    "dev": "tsup src --watch"
+  },
+  "bin": {
+    "colorscheme": "./dist/index.js"
+  },
+  "keywords": [],
+  "author": "Federico Vitale <mail@fedevitale.dev>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/lua-json": "^1.0.1",
+    "@types/node": "^18.11.17",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "colorscheme": "^1.0.0",
+    "js-yaml": "^4.1.0",
+    "lua-json": "^1.0.1",
+    "yaml": "^2.1.3"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "include": [
+    "src/**/*",
+    "*.env.d.ts"
+  ],
+  "display": "Base",
+  "compilerOptions": {
+    "moduleResolution": "Node",
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "stripInternal": true,
+    "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "outDir": "build",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "pretty": true,
+    "declaration": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "./coverage"
+  ]
+}

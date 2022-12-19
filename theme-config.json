@@ -1,0 +1,38 @@
+[
+  {
+    "name": "nightfox",
+    "items": {
+      "neovim": "nightfox",
+      "alacritty": "/Users/federicovitale/.config/alacritty/themes/nightfox/nightfox.yml",
+      "tmux": {
+        "name": "/Users/federicovitale/.tmux/themes/nightfox/nightfox.tmux",
+        "plugin": false
+      }
+    }
+  },
+  {
+    "name": "srcery",
+    "items": {
+      "neovim": "srcery",
+      "alacritty": "/Users/federicovitale/.config/alacritty/themes/srcery_alacritty.yml",
+      "tmux": {
+        "plugin": true,
+        "name": "srcery-colors/srcery-tmux",
+        "options": {
+          "@srcery_tmux_patched_font": "'1'"
+        }
+      }
+    }
+  },
+  {
+    "name": "iceberg",
+    "items": {
+      "neovim": "iceberg",
+      "alacritty": "/Users/federicovitale/.config/alacritty/themes/iceberg.yml",
+      "tmux": {
+        "plugin": false,
+        "name": "/Users/federicovitale/.tmux/themes/iceberg_minimal.tmux.conf"
+      }
+    }
+  }
+]
