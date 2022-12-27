@@ -1,13 +1,8 @@
-use home::home_dir;
 use serde::de::DeserializeOwned;
-use std::env;
 use std::fs;
 use std::path::Path;
-use std::path::PathBuf;
-use std::str::FromStr;
 
 use crate::error;
-use crate::models::Theme;
 
 pub trait File
 where
@@ -24,52 +19,6 @@ where
 
         serde_json::to_writer_pretty(file, self).map_err(error::Error::JSON)
     }
-}
-
-/// Search for a valid config file in the following locations
-/// - $XDG_CONFIG/colorscheme/themes.json
-/// - ~/.colorscheme/themes.json
-/// - ~/.colorscheme.json
-pub fn get_config_file() -> crate::Result<PathBuf> {
-    let config_path = get_config_dir_file();
-    let home_config_path = get_home_file();
-
-    if !config_path.exists() {
-        if !home_config_path.exists() {
-            // create a new file inside `config_path`
-            let themes = Vec::<Theme>::new();
-            themes.write(config_path.as_path())?;
-
-            return Ok(config_path);
-        }
-
-        // read from home
-        return Ok(home_config_path);
-    }
-
-    Ok(config_path)
-}
-
-pub fn get_config_path() -> PathBuf {
-    let home = home_dir().expect("Unable to retrive homedir.");
-
-    match env::var("XDG_CONFIG_HOME") {
-        Ok(p) => PathBuf::from_str(&p).unwrap(),
-        Err(_) => {
-            let home = home.join(Path::new(".config"));
-            home
-        }
-    }
-}
-
-fn get_config_dir_file() -> PathBuf {
-    let config_path = get_config_path();
-    config_path.join("colorscheme/themes.json")
-}
-
-fn get_home_file() -> PathBuf {
-    let home = home_dir().expect("Unable to retrive homedir.");
-    home.join(".colorscheme.json")
 }
 
 // inspired by official alacritty repo

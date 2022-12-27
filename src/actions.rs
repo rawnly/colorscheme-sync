@@ -1,4 +1,5 @@
 use crate::{
+    config::{self, CONFIG_FILE, XDG_PREFIX},
     error,
     fsutil::*,
     models::{Theme, ThemeConfig, Themes},
@@ -7,7 +8,7 @@ use crate::{
 use colored::*;
 
 pub fn list() -> Result<()> {
-    let config = get_config_file()?;
+    let config = config::get_config_path(XDG_PREFIX, CONFIG_FILE).unwrap();
     let content = Themes::load(config.as_path())?;
 
     if content.is_empty() {
@@ -23,7 +24,7 @@ pub fn list() -> Result<()> {
 }
 
 pub fn add(options: NewOptions) -> Result<()> {
-    let config = get_config_file()?;
+    let config = config::get_config_path(XDG_PREFIX, CONFIG_FILE).unwrap();
     let mut content = Themes::load(config.as_path())?;
 
     let template_theme = Theme::new(&options.name);
@@ -37,7 +38,7 @@ pub fn add(options: NewOptions) -> Result<()> {
 }
 
 pub fn set_theme(name: &str) -> Result<()> {
-    let config = get_config_file()?;
+    let config = config::get_config_path(XDG_PREFIX, CONFIG_FILE).unwrap();
     let content = Themes::load(config.as_path())?;
 
     if content.is_empty() {
@@ -57,31 +58,19 @@ pub fn set_theme(name: &str) -> Result<()> {
         if astronvim.is_some() {
             theme.set_neovim()?;
 
-            println!(
-                "{} -> {} theme successfully set",
-                "ASTRONVIM".bold().blue(),
-                theme.name.yellow()
-            );
+            println!("{} theme updated successfully", "ASTRONVIM".bold().blue());
         }
 
         if alacritty.is_some() {
             theme.set_alacritty()?;
 
-            println!(
-                "{} -> {} theme successfully set",
-                "ALACRITTY".bold().blue(),
-                theme.name.yellow()
-            );
+            println!("{} theme updated successfully", "ALACRITTY".bold().blue());
         }
 
         if tmux.is_some() {
             theme.set_tmux()?;
 
-            println!(
-                "{} -> {} theme successfully set",
-                "TMUX".bold().blue(),
-                theme.name.yellow()
-            );
+            println!("{} theme updated successfully", "TMUX".bold().blue());
         }
 
         return Ok(());

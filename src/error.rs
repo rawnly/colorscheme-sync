@@ -18,6 +18,9 @@ pub enum Error {
     #[error("the theme you are looking for does not exists")]
     ThemeNotFound,
 
+    #[error("{0}")]
+    Custom(&'static str),
+
     #[error("something went wrong: {0}")]
     Generic(#[from] anyhow::Error),
 }

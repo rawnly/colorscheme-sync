@@ -1,4 +1,5 @@
 pub mod actions;
+pub mod config;
 pub mod error;
 pub mod fsutil;
 pub mod models;
@@ -7,7 +8,6 @@ pub type Result<T> = std::result::Result<T, error::Error>;
 
 #[derive(clap::Parser, Debug, Clone)]
 pub struct NewOptions {
-    #[clap(long, short)]
     pub name: String,
 }
 
@@ -19,6 +19,7 @@ pub enum Action {
     /// Generates template code for a new theme
     New(NewOptions),
 
+    /// Sets the current theme
     Set(NewOptions),
 }
 
@@ -27,4 +28,7 @@ pub enum Action {
 pub struct Args {
     #[clap(subcommand)]
     pub action: Action,
+
+    /// name of the theme
+    pub theme: Option<String>,
 }
