@@ -1,4 +1,4 @@
-use clap::Parser;
+use clap::{CommandFactory, Parser};
 use colorscheme::{
     actions,
     config::{self, CONFIG_FILE, XDG_PREFIX},
@@ -30,11 +30,22 @@ fn main() -> colorscheme::Result<()> {
         themes.write(config_path.unwrap().as_path())?;
     }
 
-    match args.action {
-        Action::List => actions::list()?,
-        Action::New(options) => actions::add(options)?,
-        Action::Set(options) => actions::set_theme(&options.name)?,
-    };
+    if let Some(theme) = args.theme {
+        return actions::set_theme(&theme);
+    }
+
+    if let Some(action) = args.action {
+        match action {
+            Action::List => actions::list()?,
+            Action::New(options) => actions::add(options)?,
+            Action::Set(options) => actions::set_theme(&options.name)?,
+        }
+
+        return Ok(());
+    }
+
+    // print help
+    Args::command().print_help()?;
 
     Ok(())
 }

@@ -27,7 +27,7 @@ pub enum Action {
 #[clap(author, version, about)]
 pub struct Args {
     #[clap(subcommand)]
-    pub action: Action,
+    pub action: Option<Action>,
 
     /// name of the theme
     pub theme: Option<String>,

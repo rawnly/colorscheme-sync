@@ -89,12 +89,14 @@ impl Theme {
 
             let mut theme_string = format!("source {}", path);
 
-            if is_plugin.is_some() && is_plugin.unwrap() {
+            if is_plugin {
                 theme_string = format!("set -g @plugin '{}'", path);
-            }
 
-            // TODO: handle the options
-            if !options.is_empty() {}
+                for (key, value) in options {
+                    let option = format!("set -g {} {}", key, value);
+                    theme_string = format!("{}\n{}", theme_string, option);
+                }
+            }
 
             let new_theme = template.replace("{{source}}", &theme_string);
 
@@ -112,7 +114,7 @@ pub struct TmuxTheme {
     /// name or path to the plugin
     pub path: String,
     /// specifies if it is a tmux plugin (tpm) or a file that needs to be sourced
-    pub is_plugin: Option<bool>,
+    pub is_plugin: bool,
     /// extra options for tpm plugins
     pub options: Vec<(String, String)>,
 }
@@ -120,7 +122,7 @@ pub struct TmuxTheme {
 impl TmuxTheme {
     pub fn new(path: &str) -> Self {
         Self {
-            is_plugin: Some(false),
+            is_plugin: false,
             path: path.to_string(),
             options: Vec::default(),
         }
