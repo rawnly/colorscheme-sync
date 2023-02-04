@@ -1,8 +1,9 @@
 # Colorscheme
-> Dead simple tool to sync colorschemes across alacritty, tmux and astronvim.
+Dead simple tool to sync colorschemes across alacritty, tmux and astronvim.
 
-> **WARN**
-UNDER ACTIVE DEVELOPMENT, NOT YET PUBLISHED
+> **Warning**
+>
+> UNDER ACTIVE DEVELOPMENT, NOT YET PUBLISHED
 
 ## Installation 
 
